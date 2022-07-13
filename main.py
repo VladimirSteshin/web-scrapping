@@ -25,21 +25,16 @@ def get_response(path, params):
     return data
 
 
-def get_articles(data):
+def get_articles(data, check):
     soup = bs4.BeautifulSoup(data, features='html.parser')
-    item = soup.find_all('article')
-    return item
-
-
-def find_coincidences(articles_found, keywords):
-    for article in articles_found:
-        preview = article.find_all(class_='tm-article-body tm-article-snippet__lead')
-        print()
+    articles = soup.find_all('article')
+    for article in articles:
+        preview = article.find_all(class_='article-formatted-body')
+        print(preview)
 
 
 if __name__ == "__main__":
     url, keywords = get_url_and_keywords('config.ini')
     headers = get_headers()
     text = get_response(url, headers)
-    articles = get_articles(text)
-    result = find_coincidences(articles, keywords)
+    articles_found = get_articles(text, keywords)
